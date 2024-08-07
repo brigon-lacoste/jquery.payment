@@ -97,7 +97,7 @@ $.payment.cards = cards = [
   }
 ]
 
-cardFromNumber = (num) ->
+$.payment.cardFromNumber = (num) ->
   num = (num + '').replace(/\D/g, '')
   for card in cards
     for pattern in card.patterns
@@ -217,7 +217,7 @@ formatCardNumber = (e) ->
 
   $target = $(e.currentTarget)
   value   = $target.val()
-  card    = cardFromNumber(value + digit)
+  card    = $.payment.cardFromNumber(value + digit)
   length  = (value.replace(/\D/g, '') + digit).length
 
   upperLength = 16
@@ -373,7 +373,7 @@ restrictCardNumber = (e) ->
 
   # Restrict number of digits
   value = ($target.val() + digit).replace(/\D/g, '')
-  card  = cardFromNumber(value)
+  card  = $.payment.cardFromNumber(value)
 
   if card
     value.length <= card.length[card.length.length - 1]
@@ -485,7 +485,7 @@ $.payment.validateCardNumber = (num) ->
   num = (num + '').replace(/\s+|-/g, '')
   return false unless /^\d+$/.test(num)
 
-  card = cardFromNumber(num)
+  card = $.payment.cardFromNumber(num)
   return false unless card
 
   num.length in card.length and
@@ -540,11 +540,11 @@ $.payment.validateCardCVC = (cvc, type) ->
 
 $.payment.cardType = (num) ->
   return null unless num
-  cardFromNumber(num)?.type or null
+  $.payment.cardFromNumber(num)?.type or null
 
 $.payment.formatCardNumber = (num) ->
   num = num.replace(/\D/g, '')
-  card = cardFromNumber(num)
+  card = $.payment.cardFromNumber(num)
   return num unless card
 
   upperLength = card.length[card.length.length - 1]
